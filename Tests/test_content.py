@@ -334,7 +334,6 @@ def mock_run(tests_settings, c, proxy, failed_playbooks, integrations, playbook_
         # run test
         status, inc_id = test_integration(c, server_url, integrations, playbook_id, prints_manager, test_options,
                                           is_mock_run=True, thread_index=thread_index)
-        prints_manager.execute_thread_prints(thread_index)
         # use results
         proxy.stop()
         if status == PB_Status.COMPLETED:
@@ -343,7 +342,6 @@ def mock_run(tests_settings, c, proxy, failed_playbooks, integrations, playbook_
             succeed_playbooks.append(playbook_id)
             end_mock_message = '------ Test {} end ------\n'.format(test_message)
             prints_manager.add_print_job(end_mock_message, print, thread_index)
-            prints_manager.execute_thread_prints(thread_index)
             return
 
         elif status == PB_Status.NOT_SUPPORTED_VERSION:
@@ -365,7 +363,6 @@ def mock_run(tests_settings, c, proxy, failed_playbooks, integrations, playbook_
         else:
             mock_failed_message = "Test failed with mock, recording new mock file. (Mock: Recording)"
             prints_manager.add_print_job(mock_failed_message, print, thread_index)
-            prints_manager.execute_thread_prints(thread_index)
             rerecord = True
     else:
         mock_recording_message = start_message + ' (Mock: Recording)'
@@ -380,7 +377,6 @@ def mock_run(tests_settings, c, proxy, failed_playbooks, integrations, playbook_
         proxy.rerecorded_tests.append(playbook_id)
     test_end_message = '------ Test {} end ------\n'.format(test_message)
     prints_manager.add_print_job(test_end_message, print, thread_index)
-    prints_manager.execute_thread_prints(thread_index)
 
 
 def run_test(tests_settings, demisto_api_key, proxy, failed_playbooks, integrations, unmockable_integrations,
